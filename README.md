@@ -2,8 +2,11 @@
 
 ## Contents
 
-- [Simple Chat @ssaquif]()
+- [Simple Chat @ssaquif](#simple-chat-app-using-socketIO)
   - [Intro](#intro)
+  - [Code Break Down](#code-break-down)
+    - [Backend](#backend)
+    - [Frontend](#frontend)
 
 ## Intro
 
@@ -13,7 +16,7 @@ WebSocket is a communication protocol that allows for persistent connections bet
 
 > So what's socket.io?
 
-Socket.io is a library that contains an API for using WebSockets. It has 2 parts.
+Socket.io is a library that contains an API for using WebSocket. It has 2 parts.
 
 1. A server side library for node.js
 2. A client side library that runs in the browser
@@ -21,3 +24,7 @@ Socket.io is a library that contains an API for using WebSockets. It has 2 parts
 Think of it as a library that somewhat simplifies and adds convenience towards interacting with WebSockets.
 
 ## Code Break Down
+
+### Backend
+
+### Frontend
