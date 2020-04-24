@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Simple Chat</title>
+		<link rel="stylesheet" href="styles/main.css" />
+	</head>
+	<body>
+		<div class="log-events-wrapper">
+			<h3>Chat Away</h3>
+			<ul id="log-events"></ul>
+		</div>
+		<div class="message-box-wrapper">
+			<form onsubmit="submitMsg(event)">
+				<input type="text" id="chat-box" />
+				<button type="submit">Send</button>
+			</form>
+		</div>
+		<!-- to use socket io on client side -->
+		<!-- must do -- const io=socketio(server) -- on backend first -->
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="src/client.js"></script>
+	</body>
+</html>
