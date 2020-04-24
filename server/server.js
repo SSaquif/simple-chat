@@ -1,16 +1,4 @@
-/*-----------------------------------------------------Notes-------------------------------------------------------------*/
-// Socket.io is a library that contains an API for Web sockets and also Node.js.
-// Think of it as a library that somewhat simplifies and adds convenience towards interacting with Web sockets.
-// Ok, so what are Web sockets?
-// Web sockets is an API that allows for persistent connections between clients and servers.
-// Both parties can send and receive data at any time until the connection is closed
-// (versus a traditional HTTP connection which closes after the response is sent).
-
-// Question 1: will socket io mess with listener that's already registered on the server (the listener for express)?
-// Ans: No
-/*------------------------------------------------------End--------------------------------------------------------------*/
-
-const http = require('http'); //maybe switch to https/http Checked:: yeah https doesnt work
+const http = require('http');
 const path = require('path');
 const express = require('express');
 const socketIO = require('socket.io');
