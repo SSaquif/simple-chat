@@ -8,6 +8,7 @@
     - [Backend](#backend)
     - [Frontend](#frontend)
     - [Back To The Backend](#back-to-the-backend)
+  - [How To Run & Test](#how-to-run-&-test)
   - [Resources](#resources)
 
 ## Intro
@@ -106,6 +107,10 @@ io.on('connection', (sock) => {
 	});
 });
 ```
+
+### How To Run & Test
+
+Start the server using yarn start or yarn dev. Open 2 tabs on your browser and set them to port 8080. You can also test with someone else using ngrok.
 
 ### Resources
 
