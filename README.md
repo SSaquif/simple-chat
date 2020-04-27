@@ -118,3 +118,5 @@ This is a super simple example to get you started. I will try add more to this a
 
 1. [SocketIO](https://www.npmjs.com/package/socket.io)
 2. [SocketIO-Client](https://www.npmjs.com/package/socket.io-client)
+3. [SocketIO docs](https://socket.io/docs/)
+4. [SocketIO ServerAPI](https://socket.io/docs/server-api/)
