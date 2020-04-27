@@ -1,4 +1,4 @@
-const sock = io(); //io() comes from the socket script
+const sock = io(); //io() comes from the socket script index.html
 
 const eventsList = document.getElementById('log-events');
 
@@ -10,12 +10,10 @@ const logEvent = (msg) => {
 
 const submitMsg = (event) => {
 	event.preventDefault();
-	console.log('hello', event.target); //this is undefined her but works on react(i believe) u keep forgetting this
-	//for html
 	const chatMsg = document.getElementById('chat-box');
 	console.log(chatMsg.value);
-
+	//user emits a custom event
 	sock.emit('user-message', chatMsg.value);
 };
 
-sock.on('welcome-message', logEvent); //looks for sock.emit('message', '...')
+sock.on('welcome-message', logEvent);
