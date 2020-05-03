@@ -7,8 +7,8 @@ const morgan = require('morgan');
 const PORT = 8080;
 
 //to server files from ../client folder instead of react
-const staticPath = path.join(`${__dirname}`, '..', 'client');
-console.log(staticPath);
+// const staticPath = path.join(`${__dirname}`, '..', 'client');
+// console.log(staticPath);
 //----------------------------------------------------//
 
 const app = express();
