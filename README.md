@@ -44,7 +44,8 @@ const server = http.createServer(app);
 const io = socketIO(server); //adding socketIO listener to Server
 ```
 
-> Question: Will socket io mess with listener that's already registered on the server (the listener for express)?
+> Question: Will socket io mess with the listener that's already registered on the server (the listener for express)?
+
 > Answer: No
 
 Next we see set up and 'endpoint' for what happens when a client gets connected. io.on takes an Event, in this case the connection even (also called connect event), and a callback function (your handles function) that tells the server what to do when a connection happens. In this case we are emitting a custom event called welcome-message to the client who just connected.
@@ -82,7 +83,7 @@ const logEvent = (msg) => {
 };
 ```
 
-Next when a user submits a message socketio must send back an event to the server with the user's message, which the server can then receive and send to other users.
+Next when a user submits a message SocketIO must send back an event to the server with the user's message, which the server can then receive and send to other users.
 
 ```javascript
 const submitMsg = (event) => {
@@ -118,5 +119,5 @@ This is a super simple example to get you started. I will try add more to this a
 
 1. [SocketIO](https://www.npmjs.com/package/socket.io)
 2. [SocketIO-Client](https://www.npmjs.com/package/socket.io-client)
-3. [SocketIO docs](https://socket.io/docs/)
+3. [SocketIO Docs](https://socket.io/docs/)
 4. [SocketIO ServerAPI](https://socket.io/docs/server-api/)
