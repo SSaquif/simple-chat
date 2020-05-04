@@ -7,14 +7,14 @@ const ChatWindowComponent = () => {
 		chatInfo,
 		actions: { receiveMsg, sendMsg },
 	} = useContext(ChatContext);
-	console.log(chatInfo.groups);
+	//console.log(chatInfo);
+
 	const chatGroups = Object.values(chatInfo.groups);
 
 	const [chatMsg, setChatMsg] = useState('');
 
 	const [selectedGroup, setSelectedGroup] = useState(chatGroups[0].groupId);
-	console.log(selectedGroup);
-	console.log(chatInfo.groups['g1'].messages);
+	//console.log(selectedGroup);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -45,9 +45,13 @@ const ChatWindowComponent = () => {
 					<ChatMsgWrapper>
 						{chatInfo.groups[selectedGroup].messages.map((message) => {
 							if (message.sender === 'currentUser') {
-								return <ChatMsgRight>{message.msg}</ChatMsgRight>;
+								return (
+									<ChatMsgRight key={message.msgId}>{message.msg}</ChatMsgRight>
+								);
 							} else {
-								return <ChatMsgLeft>{message.msg}</ChatMsgLeft>;
+								return (
+									<ChatMsgLeft key={message.msgId}>{message.msg}</ChatMsgLeft>
+								);
 							}
 						})}
 					</ChatMsgWrapper>
@@ -81,7 +85,7 @@ const ChatHeader = styled.h3`
 `;
 const ChatBodyWrapper = styled.div`
 	display: flex;
-	padding: 30px;
+	padding: 10px 30px 30px 30px;
 	margin: 20px;
 	border: 1px solid #32a852;
 `;
@@ -95,6 +99,8 @@ const ChatSidebar = styled.div`
 `;
 const ChatSideBarHeader = styled.h4`
 	text-align: center;
+	border-bottom: 1px solid #32a852;
+	padding-bottom: 20px;
 `;
 const ChatGroup = styled.button`
 	flex: 1;
@@ -109,6 +115,8 @@ const ChatWindow = styled.div`
 `;
 const ChatWindowHeader = styled.h4`
 	text-align: center;
+	border-bottom: 1px solid #32a852;
+	padding-bottom: 20px;
 `;
 const ChatMsgWrapper = styled.div`
 	padding-bottom: 20px;
