@@ -61,7 +61,7 @@ const ChatWindowComponent = () => {
 						}}
 					>
 						<ChatInput
-							rows="2"
+							rows="4"
 							type="text"
 							id="chat-box"
 							value={chatMsg}
@@ -147,5 +147,5 @@ const ChatSubmitButton = styled.button`
 	background-color: #32a852;
 	color: white;
 	border: none;
-	margin: 5px 10px 5px 20px;
+	margin: 15px 10px 15px 20px;
 `;
