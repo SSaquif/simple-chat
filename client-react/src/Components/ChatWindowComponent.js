@@ -1,7 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
+import { ChatContext } from './ChatWindowContext';
 import styled from 'styled-components';
 
-function App() {
+const ChatWindowComponent = () => {
+	const chatState = useContext(ChatContext);
+	console.log(chatState);
 	const [chatMsg, setChatMsg] = useState('');
 
 	const handleSubmit = (event) => {
@@ -21,8 +24,8 @@ function App() {
 				<ChatWindow>
 					<ChatWindowHeader>Messages</ChatWindowHeader>
 					<ChatMsgWrapper>
-						<ChatMsgLeft>Msg 1</ChatMsgLeft>
-						<ChatMsgRight>Msg 2</ChatMsgRight>
+						<ChatMsgLeft>Msg 1 From Friend</ChatMsgLeft>
+						<ChatMsgRight>Msg 2 From User</ChatMsgRight>
 					</ChatMsgWrapper>
 					<ChatNewMsgForm
 						onSubmit={(event) => {
@@ -43,9 +46,9 @@ function App() {
 			</ChatBodyWrapper>
 		</Fragment>
 	);
-}
+};
 
-export default App;
+export default ChatWindowComponent;
 
 //--------CSS----------//
 const ChatHeader = styled.h3`
@@ -59,7 +62,7 @@ const ChatBodyWrapper = styled.div`
 `;
 const ChatSidebar = styled.div`
 	flex: 1;
-	border-right: 1px solid red;
+	border-right: 1px dashed;
 `;
 const ChatSideBarHeader = styled.h4`
 	text-align: center;
