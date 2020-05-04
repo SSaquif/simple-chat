@@ -6,10 +6,10 @@ const morgan = require('morgan');
 
 const PORT = 8080;
 
-//to server files from ../client folder instead of react
+//-----to server files from ../client folder instead of react------//
 // const staticPath = path.join(`${__dirname}`, '..', 'client');
 // console.log(staticPath);
-//----------------------------------------------------//
+//-----------------------------------------------------------------//
 
 const app = express();
 const server = http.createServer(app); //adding express listener to server
@@ -20,10 +20,10 @@ app.use(morgan('dev'));
 
 //app.use(express.static(staticPath)); //to use ../client instead of react
 
-io.on('connection', (sock) => {
-	console.log('Someone Connected, io works');
-	sock.emit('welcome-message', 'HI you are connected');
-	sock.on('user-message', (msg) => {
+io.on('connection', (socket) => {
+	console.log('Someone Connected');
+	socket.emit('connection-message', { status: 'connected' });
+	socket.on('user-message', (msg) => {
 		console.log('hello', msg);
 		io.emit('welcome-message', msg);
 	});

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const ChatWindowComponent = () => {
 	const {
 		chatInfo,
-		actions: { receiveMsg, sendMsg },
+		actions: { sendMsg },
 	} = useContext(ChatContext);
 	//console.log(chatInfo);
 
@@ -43,6 +43,9 @@ const ChatWindowComponent = () => {
 				<ChatWindow>
 					<ChatWindowHeader>Messages</ChatWindowHeader>
 					<ChatMsgWrapper>
+						<ChatConnectionStatus connected={chatInfo.status}>
+							{chatInfo.status}
+						</ChatConnectionStatus>
 						{chatInfo.groups[selectedGroup].messages.map((message) => {
 							if (message.sender === 'currentUser') {
 								return (
@@ -120,6 +123,12 @@ const ChatWindowHeader = styled.h4`
 `;
 const ChatMsgWrapper = styled.div`
 	padding-bottom: 20px;
+`;
+const ChatConnectionStatus = styled.div`
+	text-align: center;
+	padding-bottom: 20px;
+	color: ${(props) =>
+		props.connected === 'connected' ? '#32a852' : '#ed2828'};
 `;
 const ChatMsgLeft = styled.div`
 	text-align: left;

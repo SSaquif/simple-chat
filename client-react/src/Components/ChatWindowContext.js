@@ -1,9 +1,14 @@
 import React, { createContext, useReducer } from 'react';
+import io from 'socket.io-client';
 
 export const ChatContext = createContext();
 
+//We first initialize the socket, outside the functional component
+//So it doesn't get re-rendered every single time the context changes
+let socket;
+
 const initialState = {
-	status: 'idle',
+	connectionStatus: 'disconnected',
 	error: null,
 	groups: {
 		g1: {
@@ -49,6 +54,14 @@ const initialState = {
 const ChatReducer = (state, action) => {
 	let newState = { ...state };
 	switch (action.type) {
+		case 'connected':
+			newState.status = action.payload.status;
+			console.log('status', newState.status);
+			return newState;
+		case 'disconnected':
+			newState.status = action.payload.status;
+			console.log('status', newState.status);
+			return newState;
 		case 'receive-msg':
 			break;
 		case 'send-msg':
@@ -61,6 +74,14 @@ const ChatReducer = (state, action) => {
 export const ChatContextProvider = ({ children }) => {
 	const [chatInfo, dispatch] = useReducer(ChatReducer, initialState);
 
+	const connectionEstablished = (status) => {
+		dispatch({ type: 'connected', payload: { status } });
+	};
+
+	const connectionEnded = () => {
+		dispatch({ type: 'disconnected', payload: { status: 'disconnected' } });
+	};
+
 	const receiveMsg = (msg, sender) => {
 		dispatch({ type: 'receive-msg', payload: { msg: msg, sender: sender } });
 	};
@@ -68,6 +89,18 @@ export const ChatContextProvider = ({ children }) => {
 	const sendMsg = (msg, sender) => {
 		dispatch({ type: 'send-msg', payload: { msg: msg, sender: sender } });
 	};
+
+	if (!socket) {
+		socket = io('http://localhost:8080');
+	}
+
+	socket.on('connection-message', ({ status }) => {
+		console.log(status);
+		connectionEstablished(status);
+	});
+	socket.on('disconnect', () => {
+		connectionEnded();
+	});
 
 	return (
 		<ChatContext.Provider
