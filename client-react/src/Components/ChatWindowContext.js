@@ -5,6 +5,41 @@ export const ChatContext = createContext();
 const initialState = {
 	status: 'idle',
 	error: null,
+	groups: {
+		g1: {
+			groupName: 'Group 1',
+			groupId: 'g1',
+			messages: [
+				{
+					sender: 'friend1',
+					timestamp: '01/05/2020 11:00pm',
+					msg: 'Sup.......?',
+				},
+				{
+					sender: 'currentUser',
+					timestamp: '01/05/2020 11.05pm',
+					msg: 'Blah Blah!!',
+				},
+			],
+		},
+
+		g2: {
+			groupName: 'Group 2',
+			groupId: 'g2',
+			messages: [
+				{
+					sender: 'friend2',
+					timestamp: '01/05/2020 11:30pm',
+					msg: 'Hello',
+				},
+				{
+					sender: 'currentUser',
+					timestamp: '01/05/2020 11.35pm',
+					msg: 'World??',
+				},
+			],
+		},
+	},
 };
 
 const ChatReducer = (state, action) => {

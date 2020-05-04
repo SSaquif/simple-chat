@@ -3,9 +3,18 @@ import { ChatContext } from './ChatWindowContext';
 import styled from 'styled-components';
 
 const ChatWindowComponent = () => {
-	const chatState = useContext(ChatContext);
-	console.log(chatState);
+	const {
+		chatInfo,
+		actions: { receiveMsg, sendMsg },
+	} = useContext(ChatContext);
+	console.log(chatInfo.groups);
+	const chatGroups = Object.values(chatInfo.groups);
+
 	const [chatMsg, setChatMsg] = useState('');
+
+	const [selectedGroup, setSelectedGroup] = useState(chatGroups[0].groupId);
+	console.log(selectedGroup);
+	console.log(chatInfo.groups['g1'].messages);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
@@ -18,14 +27,29 @@ const ChatWindowComponent = () => {
 			<ChatBodyWrapper>
 				<ChatSidebar>
 					<ChatSideBarHeader>Chats</ChatSideBarHeader>
-					<ChatGroup>Person/Group 1</ChatGroup>
-					<ChatGroup>Person/Group 2</ChatGroup>
+					{chatGroups.map((group) => {
+						return (
+							<ChatGroup
+								key={group.groupId}
+								onClick={() => {
+									setSelectedGroup(group.groupId);
+								}}
+							>
+								{group.groupName}
+							</ChatGroup>
+						);
+					})}
 				</ChatSidebar>
 				<ChatWindow>
 					<ChatWindowHeader>Messages</ChatWindowHeader>
 					<ChatMsgWrapper>
-						<ChatMsgLeft>Msg 1 From Friend</ChatMsgLeft>
-						<ChatMsgRight>Msg 2 From User</ChatMsgRight>
+						{chatInfo.groups[selectedGroup].messages.map((message) => {
+							if (message.sender === 'currentUser') {
+								return <ChatMsgRight>{message.msg}</ChatMsgRight>;
+							} else {
+								return <ChatMsgLeft>{message.msg}</ChatMsgLeft>;
+							}
+						})}
 					</ChatMsgWrapper>
 					<ChatNewMsgForm
 						onSubmit={(event) => {
@@ -33,6 +57,7 @@ const ChatWindowComponent = () => {
 						}}
 					>
 						<ChatInput
+							rows="2"
 							type="text"
 							id="chat-box"
 							value={chatMsg}
@@ -58,17 +83,25 @@ const ChatBodyWrapper = styled.div`
 	display: flex;
 	padding: 30px;
 	margin: 20px;
-	border: 1px solid;
+	border: 1px solid #32a852;
 `;
 const ChatSidebar = styled.div`
 	flex: 1;
-	border-right: 1px dashed;
+	border-right: 1px dashed #32a852;
+	padding-right: 20px;
+	/*For children*/
+	display: flex;
+	flex-direction: column;
 `;
 const ChatSideBarHeader = styled.h4`
 	text-align: center;
 `;
-const ChatGroup = styled.div`
+const ChatGroup = styled.button`
+	flex: 1;
 	margin-bottom: 20px;
+	background-color: #32a852;
+	color: white;
+	border: none;
 `;
 const ChatWindow = styled.div`
 	flex: 4;
@@ -95,8 +128,16 @@ const ChatNewMsgForm = styled.form`
 	display: flex;
 `;
 
-const ChatInput = styled.input`
-	flex: 1;
+const ChatInput = styled.textarea`
+	flex: 9;
+	color: #32a852;
 	margin-right: 10px;
+	border: 2px solid #32a852;
 `;
-const ChatSubmitButton = styled.button``;
+const ChatSubmitButton = styled.button`
+	flex: 1;
+	background-color: #32a852;
+	color: white;
+	border: none;
+	margin: 5px 10px 5px 20px;
+`;
