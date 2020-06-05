@@ -63,9 +63,7 @@ const ChatReducer = (state, action) => {
 			console.log('status', newState.status);
 			return newState;
 		case 'receive-msg':
-			break;
 		case 'send-msg':
-			break;
 		default:
 			return newState;
 	}
