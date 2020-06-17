@@ -21,15 +21,15 @@ app.use(morgan('dev'));
 //app.use(express.static(staticPath)); //to use ../client instead of react
 
 io.on('connection', (socket) => {
-	console.log('Someone Connected');
+	console.log('Someone Connected on socket', socket.id);
 	socket.emit('connection-message', { status: 'connected' });
-	socket.on('user-message', (msg) => {
-		console.log('hello', msg);
-		io.emit('welcome-message', msg);
+	socket.on('sender-chat-message', ({ groupId, sender, msg, time }) => {
+		console.log('msgDetails', groupId, sender, msg, time);
+		io.emit('receiver-chat-message', { groupId, sender, msg, time });
 	});
 });
 
-server.on('error', (err) => {
+server.on('error', (error) => {
 	console.log('Server Error', error);
 });
 

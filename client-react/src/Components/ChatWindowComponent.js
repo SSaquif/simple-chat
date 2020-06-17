@@ -7,18 +7,23 @@ const ChatWindowComponent = () => {
 		chatInfo,
 		actions: { sendMsg },
 	} = useContext(ChatContext);
-	//console.log(chatInfo);
+	console.log('chatInfo from context in window', chatInfo);
 
 	const chatGroups = Object.values(chatInfo.groups);
 
 	const [chatMsg, setChatMsg] = useState('');
 
-	const [selectedGroup, setSelectedGroup] = useState(chatGroups[0].groupId);
-	//console.log(selectedGroup);
+	const [selectedGroupId, setSelectedGroupId] = useState(chatGroups[0].groupId);
+	//console.log(selectedGroupId);
+
+	const currentUser = 'currentUser'; //currently hardcoding this
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log('Event', chatMsg);
+		const time = new Date();
+		console.log('Event', chatMsg, selectedGroupId, time, currentUser);
+		sendMsg(selectedGroupId, currentUser, chatMsg, time);
+		setChatMsg('');
 	};
 
 	return (
@@ -32,7 +37,7 @@ const ChatWindowComponent = () => {
 							<ChatGroup
 								key={group.groupId}
 								onClick={() => {
-									setSelectedGroup(group.groupId);
+									setSelectedGroupId(group.groupId);
 								}}
 							>
 								{group.groupName}
@@ -46,7 +51,7 @@ const ChatWindowComponent = () => {
 						<ChatConnectionStatus connected={chatInfo.status}>
 							{chatInfo.status}
 						</ChatConnectionStatus>
-						{chatInfo.groups[selectedGroup].messages.map((message) => {
+						{chatInfo.groups[selectedGroupId].messages.map((message) => {
 							if (message.sender === 'currentUser') {
 								return (
 									<ChatMsgRight key={message.msgId}>{message.msg}</ChatMsgRight>
