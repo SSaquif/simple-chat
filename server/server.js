@@ -22,7 +22,9 @@ app.use(morgan("dev"));
 
 io.on("connection", (socket) => {
   console.log("Someone Connected on socket", socket.id);
-  // socket.emit('connection-message', { status: 'connected' });
+
+  socket.emit("connection-message", { status: "connected" });
+
   socket.on("sender-chat-message", ({ groupId, sender, msg, time }) => {
     console.log("msgDetails", groupId, sender, msg, time);
     io.emit("receiver-chat-message", {

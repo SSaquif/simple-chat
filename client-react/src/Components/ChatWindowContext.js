@@ -80,7 +80,6 @@ export const ChatContextProvider = ({ children }) => {
   const socket = io("localhost:8080");
 
   const sendMsg = (groupId, sender, msg, time) => {
-    console.log(groupId, sender, msg, time);
     socket.emit("sender-chat-message", { groupId, sender, msg, time });
   };
 
