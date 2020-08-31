@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
-import socket from "../Utils/webSockets/socketConnection";
+import io from "socket.io-client";
+
 export const ChatContext = createContext();
 
 const initialState = {
@@ -50,16 +51,14 @@ const ChatReducer = (state, action) => {
   let newState = { ...state };
   switch (action.type) {
     case "connected":
-      newState.status = action.payload.status;
-      console.log("status", newState.status);
-      return newState;
+      newState.connectionStatus = action.payload.status;
+      break;
+
     case "disconnected":
-      newState.status = action.payload.status;
-      console.log("status", newState.status);
-      return newState;
+      newState.connectionStatus = action.payload.status;
+      break;
+
     case "receive-msg":
-      // { group, sender, msg, time }
-      console.log(action.payload);
       const msgIndex =
         newState.groups[action.payload.groupId].messages.length + 1;
       const newMsg = {
@@ -69,33 +68,35 @@ const ChatReducer = (state, action) => {
         msgId: "m-" + msgIndex,
       };
       newState.groups[action.payload.groupId].messages.push(newMsg);
-      return newState;
+      break;
+
     default:
-      return newState;
+      break;
   }
+  return newState;
 };
-
-const sendMsg = (groupId, sender, msg, time) => {
-  console.log(groupId, sender, msg, time);
-  socket.emit("sender-chat-message", { groupId, sender, msg, time });
-};
-
-//We first initialize the socket, outside the functional component
-//So it doesn't get re-rendered every single time the context provider changes
 
 export const ChatContextProvider = ({ children }) => {
+  const socket = io("localhost:8080");
+
+  const sendMsg = (groupId, sender, msg, time) => {
+    console.log(groupId, sender, msg, time);
+    socket.emit("sender-chat-message", { groupId, sender, msg, time });
+  };
+
   const [chatInfo, dispatch] = useReducer(ChatReducer, initialState);
 
   useEffect(() => {
     try {
-      socket.open();
       socket.on("connection-message", ({ status }) => {
-        console.log(status);
-        connectionEstablished(status);
+        dispatch({ type: "connected", payload: { status } });
       });
+
       socket.on("disconnect", () => {
-        connectionEnded();
+        dispatch({ type: "disconnected", payload: { status: "disconnected" } });
+        throw new Error("Server Got Disconnected");
       });
+
       socket.on("receiver-chat-message", ({ groupId, sender, msg, time }) => {
         dispatch({
           type: "receive-msg",
@@ -107,29 +108,15 @@ export const ChatContextProvider = ({ children }) => {
     }
 
     return () => {
-      socket.close();
+      socket.off("connection-message");
+      socket.off("disconnect");
+      socket.off("receiver-chat-message");
+      socket.close(); //Only this should be enough I beleive
     };
   }, []);
 
-  const connectionEstablished = (status) => {
-    console.log("inside connection established");
-    dispatch({ type: "connected", payload: { status } });
-  };
-
-  const connectionEnded = () => {
-    console.log("inside connection Ended");
-    dispatch({ type: "disconnected", payload: { status: "disconnected" } });
-    socket.emit("disconnect");
-  };
-
-  const receiveMsg = (groupId, sender, msg, time) => {
-    dispatch({ type: "receive-msg", payload: { groupId, sender, msg, time } });
-  };
-
   return (
-    <ChatContext.Provider
-      value={{ chatInfo, actions: { receiveMsg, sendMsg } }}
-    >
+    <ChatContext.Provider value={{ chatInfo, actions: { sendMsg } }}>
       {children}
     </ChatContext.Provider>
   );
